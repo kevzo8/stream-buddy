@@ -1,0 +1,7 @@
+{
+  "name": "Twitch Aura - AI Stream Companion",
+  "description": "A high-performance Twitch integration that monitors your stream chat and responds in real-time using Gemini's high-fidelity voice. Transform your chat interaction into a living, talking conversational experience.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}
