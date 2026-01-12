@@ -30,4 +30,5 @@ export interface AppSettings {
   voiceName: 'Kore' | 'Puck' | 'Charon' | 'Fenrir' | 'Zephyr';
   isAutoSpeak: boolean;
   ignoredUsers: string[];
+  responseCooldown: number; // Seconds between AI replies
 }
