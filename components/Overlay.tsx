@@ -65,10 +65,12 @@ const Overlay: React.FC = () => {
       `;
 
       let text = "";
-      if (settings.llmProvider === 'openai' && settings.openaiKey) {
+      const openaiKey = (process.env as any).OPENAI_API_KEY || settings.openaiKey;
+
+      if (settings.llmProvider === 'openai' && openaiKey) {
         const res = await fetch('https://api.openai.com/v1/chat/completions', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${settings.openaiKey}` },
+          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${openaiKey}` },
           body: JSON.stringify({ model: 'gpt-4o-mini', messages: [{ role: 'user', content: prompt }] })
         });
         const data = await res.json();

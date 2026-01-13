@@ -5,6 +5,8 @@ import react from '@vitejs/plugin-react';
 export default defineConfig({
   plugins: [react()],
   define: {
-    'process.env': process.env
+    'process.env.API_KEY': JSON.stringify(process.env.API_KEY),
+    'process.env.OPENAI_API_KEY': JSON.stringify(process.env.OPENAI_API_KEY),
+    'process.env.GROQ_API_KEY': JSON.stringify(process.env.GROQ_API_KEY)
   }
 });

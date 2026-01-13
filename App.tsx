@@ -190,20 +190,22 @@ const App: React.FC = () => {
             if (!res.text) throw new Error("EMPTY_RESPONSE");
             generatedText = res.text.trim();
           } else if (activeProvider === 'openai') {
-            if (!currentSettings.openaiKey) throw new Error("OPENAI_KEY_MISSING");
+            const openaiKey = (process.env as any).OPENAI_API_KEY || currentSettings.openaiKey;
+            if (!openaiKey) throw new Error("OPENAI_KEY_MISSING");
             const res = await fetch('https://api.openai.com/v1/chat/completions', {
               method: 'POST',
-              headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${currentSettings.openaiKey}` },
+              headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${openaiKey}` },
               body: JSON.stringify({ model: activeModel, messages: [{ role: 'user', content: prompt }] })
             });
             const data = await res.json();
             if (!res.ok) throw new Error(data.error?.message || "OPENAI_ERROR");
             generatedText = data.choices?.[0]?.message?.content || "";
           } else if (activeProvider === 'groq') {
-            if (!currentSettings.groqKey) throw new Error("GROQ_KEY_MISSING");
+            const groqKey = (process.env as any).GROQ_API_KEY || currentSettings.groqKey;
+            if (!groqKey) throw new Error("GROQ_KEY_MISSING");
             const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
               method: 'POST',
-              headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${currentSettings.groqKey}` },
+              headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${groqKey}` },
               body: JSON.stringify({ model: activeModel, messages: [{ role: 'user', content: prompt }] })
             });
             const data = await res.json();
@@ -245,10 +247,11 @@ const App: React.FC = () => {
               audioBase64 = res.candidates?.[0]?.content?.parts?.[0]?.inlineData?.data || "";
               isStandard = false;
             } else if (currentSettings.voiceProvider === 'openai') {
-              if (!currentSettings.openaiKey) throw new Error("API Key required");
+              const openaiKey = (process.env as any).OPENAI_API_KEY || currentSettings.openaiKey;
+              if (!openaiKey) throw new Error("API Key required");
               const res = await fetch('https://api.openai.com/v1/audio/speech', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${currentSettings.openaiKey}` },
+                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${openaiKey}` },
                 body: JSON.stringify({ model: 'tts-1', input: generatedText, voice: currentSettings.voiceName.toLowerCase() })
               });
               const blob = await res.blob();
